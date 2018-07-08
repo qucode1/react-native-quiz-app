@@ -1,16 +1,17 @@
-import { createStackNavigator } from "react-navigation"
+import { createStackNavigator, createDrawerNavigator } from "react-navigation"
 import React, { Component, Fragment } from "react"
 import { withTheme, Button, Card, IconToggle } from "react-native-material-ui"
-import { AsyncStorage, View, StatusBar } from "react-native"
+import { AsyncStorage, View, Text } from "react-native"
 
 import { signInWithGoogleAsync, signOut } from "./utils/google-signin"
+import StatusBarPlaceholder from "./components/StatusBarPlaceholder"
 
 import HomeScreen from "./screens/Home"
 import AboutScreen from "./screens/About"
 
 const RightHeaderElement = ({ theme, logout }) => (
   <IconToggle
-    name="person"
+    name="exit-to-app"
     style={{
       container: {
         backgroundColor: theme.palette.primaryColor
@@ -23,17 +24,33 @@ const RightHeaderElement = ({ theme, logout }) => (
   />
 )
 
-const Router = createStackNavigator(
+const LeftHeaderElement = ({ theme }) => (
+  <IconToggle
+    name="menu"
+    style={{
+      container: {
+        backgroundColor: theme.palette.primaryColor
+      },
+      icon: {
+        color: "white"
+      }
+    }}
+    onPress={() => console.log("menu pressed")}
+  />
+)
+
+const Router = createDrawerNavigator(
   {
     Home: {
       screen: HomeScreen,
       navigationOptions: ({ screenProps: { theme, logout } }) => ({
-        title: "Home",
-        headerRight: <RightHeaderElement theme={theme} logout={logout} />,
-        headerTintColor: theme.palette.alternateTextColor,
-        headerStyle: {
-          backgroundColor: theme.palette.primaryColor
-        }
+        title: "Home"
+        // headerLeft: <LeftHeaderElement theme={theme} />,
+        // headerRight: <RightHeaderElement theme={theme} logout={logout} />,
+        // headerTintColor: theme.palette.alternateTextColor,
+        // headerStyle: {
+        //   backgroundColor: theme.palette.primaryColor
+        // }
       })
     },
     About: {
@@ -56,6 +73,7 @@ const Router = createStackNavigator(
 class RouterWithTheme extends Component {
   state = {
     isLoggedIn: false,
+    loading: false,
     userName: ""
   }
   async componentDidMount() {
@@ -63,11 +81,12 @@ class RouterWithTheme extends Component {
     userName && this.setState({ userName, isLoggedIn: true })
   }
   googleSignIn = async () => {
+    this.setState({ loading: true })
     const { userName } = await signInWithGoogleAsync()
-    console.log("userName after signin", userName)
     if (userName) {
       this.setState({ userName, isLoggedIn: true })
     }
+    this.setState({ loading: false })
   }
   logout = async () => {
     await signOut()
@@ -86,16 +105,7 @@ class RouterWithTheme extends Component {
           />
         ) : (
           <Fragment>
-            <StatusBar
-              backgroundColor={this.props.theme.palette.primaryColor}
-              barStyle="light-content"
-            />
-            <View
-              style={{
-                height: StatusBar.currentHeight,
-                backgroundColor: this.props.theme.palette.primaryColor
-              }}
-            />
+            <StatusBarPlaceholder theme={this.props.theme} />
             <View
               style={{
                 flex: 1,
@@ -104,12 +114,16 @@ class RouterWithTheme extends Component {
                 alignItems: "center"
               }}
             >
-              <Button
-                raised
-                primary
-                text="Goolge Login"
-                onPress={this.googleSignIn}
-              />
+              {this.state.loading ? (
+                <Text>Loading...</Text>
+              ) : (
+                <Button
+                  raised
+                  primary
+                  text="Goolge Login"
+                  onPress={this.googleSignIn}
+                />
+              )}
             </View>
           </Fragment>
         )}
