@@ -7,9 +7,11 @@ import WithHeader from "../layouts/WithHeader"
 class About extends Component {
   render() {
     const { navigate } = this.props.navigation
-    const { logout } = this.props.screenProps
     return (
-      <WithHeader navigation={this.props.navigation} logout={logout}>
+      <WithHeader
+        navigation={this.props.navigation}
+        screenProps={this.props.screenProps}
+      >
         <Text>About Component</Text>
         <Button
           primary

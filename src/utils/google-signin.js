@@ -1,7 +1,7 @@
 import Expo from "expo"
 import { AsyncStorage } from "react-native"
 
-import { googleAndroidClientId } from "../../secrets.json"
+import { googleAndroidClientId, privateRSAKey } from "../../secrets.json"
 
 export async function signInWithGoogleAsync() {
   try {
@@ -9,7 +9,7 @@ export async function signInWithGoogleAsync() {
       androidClientId: googleAndroidClientId,
       scopes: ["profile", "email"]
     })
-
+    console.log("user", user)
     if (type === "success") {
       await Promise.all([
         AsyncStorage.setItem("userId", `${user.id}`),

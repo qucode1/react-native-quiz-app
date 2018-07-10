@@ -8,60 +8,18 @@ import StatusBarPlaceholder from "./components/StatusBarPlaceholder"
 
 import HomeScreen from "./screens/Home"
 import AboutScreen from "./screens/About"
-
-const RightHeaderElement = ({ theme, logout }) => (
-  <IconToggle
-    name="exit-to-app"
-    style={{
-      container: {
-        backgroundColor: theme.palette.primaryColor
-      },
-      icon: {
-        color: "white"
-      }
-    }}
-    onPress={logout}
-  />
-)
-
-const LeftHeaderElement = ({ theme }) => (
-  <IconToggle
-    name="menu"
-    style={{
-      container: {
-        backgroundColor: theme.palette.primaryColor
-      },
-      icon: {
-        color: "white"
-      }
-    }}
-    onPress={() => console.log("menu pressed")}
-  />
-)
+import ProfileScreen from "./screens/Profile"
 
 const Router = createDrawerNavigator(
   {
     Home: {
-      screen: HomeScreen,
-      navigationOptions: ({ screenProps: { theme, logout } }) => ({
-        title: "Home"
-        // headerLeft: <LeftHeaderElement theme={theme} />,
-        // headerRight: <RightHeaderElement theme={theme} logout={logout} />,
-        // headerTintColor: theme.palette.alternateTextColor,
-        // headerStyle: {
-        //   backgroundColor: theme.palette.primaryColor
-        // }
-      })
+      screen: HomeScreen
     },
     About: {
-      screen: AboutScreen,
-      navigationOptions: ({ screenProps: { theme } }) => ({
-        title: "About",
-        headerTintColor: theme.palette.alternateTextColor,
-        headerStyle: {
-          backgroundColor: theme.palette.accentColor
-        }
-      })
+      screen: AboutScreen
+    },
+    Profile: {
+      screen: ProfileScreen
     }
   },
   {
