@@ -10,6 +10,7 @@ export async function signInWithGoogleAsync() {
       scopes: ["profile", "email"]
     })
     console.log("user", user)
+    console.log("accessToken", accessToken)
     if (type === "success") {
       await Promise.all([
         AsyncStorage.setItem("userId", `${user.id}`),
@@ -17,7 +18,7 @@ export async function signInWithGoogleAsync() {
         AsyncStorage.setItem("userName", `${user.name}`),
         AsyncStorage.setItem("accessToken", `${accessToken}`)
       ])
-      return { userName: user.name }
+      return { ...user, accessToken }
     } else {
       return { cancelled: true }
     }
@@ -31,7 +32,9 @@ export async function signOut() {
     AsyncStorage.removeItem("userId"),
     AsyncStorage.removeItem("userEmail"),
     AsyncStorage.removeItem("userName"),
-    AsyncStorage.removeItem("accessToken")
+    AsyncStorage.removeItem("accessToken"),
+    AsyncStorage.removeItem("correctQuestions"),
+    AsyncStorage.removeItem("wrongQuestions")
   ])
   return true
 }

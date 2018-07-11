@@ -5,6 +5,7 @@ import { AsyncStorage, View, Text } from "react-native"
 
 import { signInWithGoogleAsync, signOut } from "./utils/google-signin"
 import StatusBarPlaceholder from "./components/StatusBarPlaceholder"
+import { withContext } from "./utils/AppContext"
 
 import HomeScreen from "./screens/Home"
 import AboutScreen from "./screens/About"
@@ -30,34 +31,36 @@ const Router = createDrawerNavigator(
 
 class RouterWithTheme extends Component {
   state = {
-    isLoggedIn: false,
-    loading: false,
-    userName: ""
-  }
-  async componentDidMount() {
-    const userName = await AsyncStorage.getItem("userName")
-    userName && this.setState({ userName, isLoggedIn: true })
+    loading: false
   }
   googleSignIn = async () => {
     this.setState({ loading: true })
-    const { userName } = await signInWithGoogleAsync()
+    const {
+      id: userId,
+      name: userName,
+      email: userEmail,
+      accessToken: userAccessToken
+    } = await signInWithGoogleAsync()
     if (userName) {
-      this.setState({ userName, isLoggedIn: true })
+      this.props.context.setContext("userName", userName)
+      this.props.context.setContext("userId", userId)
+      this.props.context.setContext("userEmail", userEmail)
+      this.props.context.setContext("userAccessToken", userAccessToken)
     }
     this.setState({ loading: false })
   }
   logout = async () => {
     await signOut()
-    this.setState({ userName: "", isLoggedIn: false })
+    this.props.context.resetContext()
   }
   render() {
     return (
       <Fragment>
-        {this.state.isLoggedIn ? (
+        {this.props.context.state.userName ? (
           <Router
             screenProps={{
               theme: this.props.theme,
-              userName: this.state.userName,
+              userName: this.props.context.state.userName,
               logout: this.logout
             }}
           />
@@ -90,4 +93,4 @@ class RouterWithTheme extends Component {
   }
 }
 
-export default withTheme(RouterWithTheme)
+export default withTheme(withContext(RouterWithTheme))

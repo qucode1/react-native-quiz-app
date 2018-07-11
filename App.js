@@ -2,6 +2,7 @@ import React from "react"
 import { COLOR, ThemeContext, getTheme } from "react-native-material-ui"
 import { Font } from "expo"
 
+import { AppContextProvider } from "./src/utils/AppContext"
 import Router from "./src/Router"
 
 const uiTheme = {
@@ -27,7 +28,9 @@ class App extends React.Component {
   render() {
     return (
       <ThemeContext.Provider value={getTheme(uiTheme)}>
-        <Router />
+        <AppContextProvider>
+          <Router />
+        </AppContextProvider>
       </ThemeContext.Provider>
     )
   }
