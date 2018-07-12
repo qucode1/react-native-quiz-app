@@ -39,13 +39,13 @@ class RouterWithTheme extends Component {
       id: userId,
       name: userName,
       email: userEmail,
-      accessToken: userAccessToken
+      profileToken: userProfileToken
     } = await signInWithGoogleAsync()
     if (userName) {
       this.props.context.setContext("userName", userName)
       this.props.context.setContext("userId", userId)
       this.props.context.setContext("userEmail", userEmail)
-      this.props.context.setContext("userAccessToken", userAccessToken)
+      this.props.context.setContext("userProfileToken", userProfileToken)
     }
     this.setState({ loading: false })
   }
