@@ -5,6 +5,8 @@ import { Button, Toolbar, Card, Subheader } from "react-native-material-ui"
 import { withTheme } from "react-native-material-ui"
 
 import WithHeader from "../layouts/WithHeader"
+import CategoryPicker from "../components/CategoryPicker"
+import QuizRouter from "../QuizRouter"
 import {
   AppContext,
   withContext,
@@ -19,21 +21,6 @@ class Home extends Component {
   }
   async componentDidMount() {
     try {
-      // const [cachedCategories, cachedCorrectQuestions] = await Promise.all([
-      //   AsyncStorage.getItem("categories").then(res => JSON.parse(res)),
-      //   AsyncStorage.getItem("correctQuestions").then(res => JSON.parse(res))
-      // ])
-      // const newState = {}
-      // if (cachedCategories && cachedCategories.length > 0) {
-      //   newState.categories = cachedCategories
-      // }
-      // if (cachedCorrectQuestions && cachedCorrectQuestions.length > 0) {
-      //   newState.correctQuestions = parsed
-      // }
-      // this.setState({
-      //   ...newState,
-      //   loading: false
-      // })
       if (this.props.context.state.categories.length) {
         this.setState({ loading: false })
       }
@@ -42,13 +29,7 @@ class Home extends Component {
       ).then(res => res.json())
       const stringifiedCategories = await JSON.stringify(categories)
       await this.props.context.setContext("categories", categories)
-      this.setState({ loading: false })
-      // AsyncStorage.setItem("categories", stringifiedCategories)
-      // this.setState((prevState, props) => {
-      //   return JSON.stringify(prevState.categories) !== stringifiedCategories
-      //     ? { categories }
-      //     : null
-      // })
+      this.state.loading && this.setState({ loading: false })
     } catch (err) {
       console.error(err)
     }
@@ -60,22 +41,18 @@ class Home extends Component {
     }
     const { navigate } = this.props.navigation
     return (
-      <WithHeader
-        navigation={this.props.navigation}
-        screenProps={this.props.screenProps}
-      >
-        <Subheader lines={1} text="Choose a test category" />
-        {this.props.context.state.categories.map(category => (
-          <Card key={category._id}>
-            <Subheader text={category.name.toUpperCase()} />
-          </Card>
-        ))}
-        <Button
-          primary
-          text="Go to about screen"
-          onPress={() => navigate("About")}
-        />
-      </WithHeader>
+      // <WithHeader
+      //   navigation={this.props.navigation}
+      //   screenProps={this.props.screenProps}
+      // >
+      <QuizRouter
+        screenProps={{
+          theme: this.props.theme,
+          mainNavigation: this.props.navigation,
+          mainScreenProps: this.props.screenProps
+        }}
+      />
+      // </WithHeader>
     )
   }
 }

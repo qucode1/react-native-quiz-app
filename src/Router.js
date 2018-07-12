@@ -1,4 +1,4 @@
-import { createStackNavigator, createDrawerNavigator } from "react-navigation"
+import { createDrawerNavigator } from "react-navigation"
 import React, { Component, Fragment } from "react"
 import { withTheme, Button, Card, IconToggle } from "react-native-material-ui"
 import { AsyncStorage, View, Text } from "react-native"
@@ -33,6 +33,7 @@ class RouterWithTheme extends Component {
   state = {
     loading: false
   }
+  async componentDidMount() {}
   googleSignIn = async () => {
     this.setState({ loading: true })
     const {
@@ -41,6 +42,7 @@ class RouterWithTheme extends Component {
       email: userEmail,
       profileToken: userProfileToken
     } = await signInWithGoogleAsync()
+    console.log("Router username", userName)
     if (userName) {
       this.props.context.setContext("userName", userName)
       this.props.context.setContext("userId", userId)

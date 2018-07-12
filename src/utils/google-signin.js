@@ -1,11 +1,7 @@
 import Expo from "expo"
 import { AsyncStorage } from "react-native"
 
-import {
-  googleAndroidClientId,
-  privateRSAKey,
-  serverURL
-} from "../../secrets.json"
+import { googleAndroidClientId, serverURL } from "../../secrets.json"
 
 export async function signInWithGoogleAsync() {
   try {
