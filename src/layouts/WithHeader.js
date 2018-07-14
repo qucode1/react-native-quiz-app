@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react"
-import { Text } from "react-native"
+import { Text, StatusBar } from "react-native"
 import { Toolbar, Avatar, Icon, Button } from "react-native-material-ui"
 
 import StatusBarPlaceHolder from "../components/StatusBarPlaceholder"
@@ -15,31 +15,18 @@ const WithHeader = ({
   return (
     <Fragment>
       <StatusBarPlaceHolder theme={theme} />
+      {/* <StatusBar backgroundColor="lime"/> not working! Why?*/}
       <Toolbar
         leftElement="menu"
         onLeftElementPress={toggleDrawer}
         centerElement="Web Dev Quiz"
         onPress={() => navigate("Home")}
+        style={{
+          container: {
+            paddingHorizontal: 10
+          }
+        }}
         rightElement={
-          // <Avatar
-          //   text={userName
-          //     .split(" ")
-          //     .map(name => name[0])
-          //     .join("")
-          //     .toUpperCase()}
-          //   style={{
-          //     container: {
-          //       backgroundColor: "white",
-          //       padding: 0,
-          //       margin: 0
-          //     },
-          //     content: {
-          //       color: "black"
-          //     }
-          //   }}
-          //   size={35}
-          //   onPress
-          // />
           <Button
             text={userName
               .split(" ")
@@ -61,14 +48,6 @@ const WithHeader = ({
             onPress={() => navigate("Profile")}
           />
         }
-        style={{
-          container: {
-            paddingHorizontal: 10
-          }
-          // rightElementContainer: {
-          //   width: 35
-          // }
-        }}
         onRightElementPress={() => console.log("logout")}
       />
       {children}
