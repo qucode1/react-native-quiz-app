@@ -13,6 +13,8 @@ import {
   AppContextProvider
 } from "../utils/AppContext"
 
+import { serverURL } from "../../secrets.json"
+
 class Home extends Component {
   state = {
     categories: [],
@@ -24,12 +26,24 @@ class Home extends Component {
       if (this.props.context.state.categories.length) {
         this.setState({ loading: false })
       }
-      const categories = await fetch(
-        "https://dev-quiz.now.sh/categories/"
-      ).then(res => res.json())
-      const stringifiedCategories = await JSON.stringify(categories)
+      const categories = await fetch(`${serverURL}/categories/`).then(res =>
+        res.json()
+      )
       await this.props.context.setContext("categories", categories)
       this.state.loading && this.setState({ loading: false })
+
+      const categoriesWithQuestions = await Promise.all(
+        categories.map(cat =>
+          fetch(`${serverURL}/categories/${cat.name}?populate=true`).then(res =>
+            res.json()
+          )
+        )
+      )
+      await Promise.all(
+        categoriesWithQuestions.map(({ category: { name, questions } }) =>
+          this.props.context.setContext(`${name}Questions`, questions)
+        )
+      )
     } catch (err) {
       console.error(err)
     }
