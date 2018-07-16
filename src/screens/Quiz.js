@@ -1,5 +1,10 @@
 import React, { Component, Fragment } from "react"
-import { Subheader, Card } from "react-native-material-ui"
+import {
+  Subheader,
+  Card,
+  BottomNavigation,
+  Icon
+} from "react-native-material-ui"
 import { Text } from "react-native"
 import { withContext } from "../utils/AppContext"
 
@@ -9,13 +14,13 @@ class Quiz extends Component {
   state = {
     category: this.props.navigation.getParam("category"),
     question: {},
-    nextQuestion: {}
+    nextQuestion: {},
+    active: "question"
   }
   componentDidMount() {
     this.setInitialQuestions()
   }
   setInitialQuestions = () => {
-    console.log("setInitialQuestions")
     if (this.state.question.title) {
       this.setState(prevState => ({
         question: prevState.nextQuestion,
@@ -46,6 +51,31 @@ class Quiz extends Component {
             nextQuestion={this.state.nextQuestion}
           />
         </Card>
+        <BottomNavigation
+          active={this.state.active}
+          hidden={false}
+          style={{
+            container: {
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              width: "100%"
+            }
+          }}
+        >
+          <BottomNavigation.Action
+            key="question"
+            icon={<Icon name="question" iconSet="SimpleLineIcons" />}
+            label="Question"
+            onPress={() => this.setState({ active: "question" })}
+          />
+          <BottomNavigation.Action
+            key="answers"
+            icon={<Icon name="ios-book-outline" iconSet="Ionicons" />}
+            label="Answers"
+            onPress={() => this.setState({ active: "answers" })}
+          />
+        </BottomNavigation>
       </Fragment>
     ) : (
       <Text>Loading...</Text>
