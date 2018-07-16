@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from "react-navigation"
 import React, { Component, Fragment } from "react"
-import { withTheme, Button, Card, IconToggle } from "react-native-material-ui"
-import { AsyncStorage, View, Text } from "react-native"
+import { withTheme, Button } from "react-native-material-ui"
+import { View, Text } from "react-native"
 
 import { signInWithGoogleAsync, signOut } from "./utils/google-signin"
 import StatusBarPlaceholder from "./components/StatusBarPlaceholder"

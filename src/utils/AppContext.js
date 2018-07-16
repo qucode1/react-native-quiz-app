@@ -37,11 +37,14 @@ const getSavedContext = async () => {
   }
 }
 
-export const withContext = Component => props => (
-  <AppContext.Consumer>
-    {ctx => <Component {...props} context={ctx} />}
-  </AppContext.Consumer>
-)
+export const withContext = Component => {
+  const AppContextConsumer = props => (
+    <AppContext.Consumer>
+      {ctx => <Component {...props} context={ctx} />}
+    </AppContext.Consumer>
+  )
+  return AppContextConsumer
+}
 
 export class AppContextProvider extends Component {
   state = { ...defaultContext }

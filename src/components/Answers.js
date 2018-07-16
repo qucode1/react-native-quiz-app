@@ -1,5 +1,5 @@
-import React, { Fragment, Component } from "react"
-import { ScrollView, Text, View, WebView } from "react-native"
+import React, { Component } from "react"
+import { View } from "react-native"
 import { withTheme } from "react-native-material-ui"
 import {
   IndicatorViewPager,
@@ -73,17 +73,17 @@ class Answers extends Component {
   }
 }
 
-const styles = {
-  scrollView: {},
-  pageStyle: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    height: 50,
-    paddingHorizontal: 10,
-    borderRightColor: "rgba(0,0,0,0.2)",
-    borderRightWidth: 1
-  }
-}
+// const styles = {
+//   scrollView: {},
+//   pageStyle: {
+//     flex: 1,
+//     alignItems: "center",
+//     justifyContent: "center",
+//     height: 50,
+//     paddingHorizontal: 10,
+//     borderRightColor: "rgba(0,0,0,0.2)",
+//     borderRightWidth: 1
+//   }
+// }
 
 export default withTheme(Answers)

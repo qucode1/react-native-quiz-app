@@ -1,6 +1,5 @@
-import React, { Fragment, Component } from "react"
-import { Text, StatusBar } from "react-native"
-import { Toolbar, Avatar, Icon, Button } from "react-native-material-ui"
+import React, { Fragment } from "react"
+import { Toolbar, Button } from "react-native-material-ui"
 
 import StatusBarPlaceHolder from "../components/StatusBarPlaceholder"
 
@@ -48,7 +47,7 @@ const WithHeader = ({
             onPress={() => navigate("Profile")}
           />
         }
-        onRightElementPress={() => console.log("logout")}
+        onRightElementPress={() => (console.log("logout"), logout)}
       />
       {children}
     </Fragment>

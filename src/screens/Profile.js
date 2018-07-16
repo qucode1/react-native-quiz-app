@@ -1,12 +1,6 @@
 import React, { Component } from "react"
-import { Text, AsyncStorage } from "react-native"
-import {
-  Subheader,
-  Button,
-  Card,
-  ListItem,
-  Divider
-} from "react-native-material-ui"
+import { AsyncStorage } from "react-native"
+import { Subheader, Button, Card, ListItem } from "react-native-material-ui"
 import WithHeader from "../layouts/WithHeader"
 
 class Profile extends Component {

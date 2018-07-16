@@ -1,25 +1,20 @@
-import React, { Component, Fragment } from "react"
-import { Text, AsyncStorage } from "react-native"
+import React, { Component } from "react"
 
-import { Button, Toolbar, Card, Subheader } from "react-native-material-ui"
 import { withTheme } from "react-native-material-ui"
 
-import WithHeader from "../layouts/WithHeader"
-import CategoryPicker from "../components/CategoryPicker"
 import QuizRouter from "../QuizRouter"
-import {
-  AppContext,
-  withContext,
-  AppContextProvider
-} from "../utils/AppContext"
+import { withContext } from "../utils/AppContext"
 
 import { serverURL } from "../../secrets.json"
 
 class Home extends Component {
-  state = {
-    categories: [],
-    correctQuestions: [],
-    loading: true
+  constructor(props) {
+    super(props)
+    this.state = {
+      categories: [],
+      correctQuestions: [],
+      loading: true
+    }
   }
   async componentDidMount() {
     try {
@@ -53,20 +48,15 @@ class Home extends Component {
     if (this.state.loading) {
       return null
     }
-    const { navigate } = this.props.navigation
+    const { navigation, theme, screenProps } = this.props
     return (
-      // <WithHeader
-      //   navigation={this.props.navigation}
-      //   screenProps={this.props.screenProps}
-      // >
       <QuizRouter
         screenProps={{
-          theme: this.props.theme,
-          mainNavigation: this.props.navigation,
-          mainScreenProps: this.props.screenProps
+          theme,
+          mainNavigation: navigation,
+          mainScreenProps: screenProps
         }}
       />
-      // </WithHeader>
     )
   }
 }

@@ -1,5 +1,4 @@
-import React, { Fragment, Component } from "react"
-import { Text } from "react-native"
+import React, { Fragment } from "react"
 
 import StatusBarPlaceHolder from "../components/StatusBarPlaceholder"
 
