@@ -24,6 +24,7 @@
     "react": "16.3.1",
     "react-native": "~0.55.2",
     "react-native-material-ui": "^1.30.1",
+    "react-native-syntax-highlighter": "^2.0.0",
     "react-native-vector-icons": "^4.6.0",
     "react-navigation": "^2.5.5",
     "rn-viewpager": "^1.2.9"

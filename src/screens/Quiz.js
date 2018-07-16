@@ -15,6 +15,7 @@ class Quiz extends Component {
     this.setInitialQuestions()
   }
   setInitialQuestions = () => {
+    console.log("setInitialQuestions")
     if (this.state.question.title) {
       this.setState(prevState => ({
         question: prevState.nextQuestion,

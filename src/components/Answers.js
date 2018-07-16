@@ -1,35 +1,75 @@
 import React, { Fragment, Component } from "react"
-import { ScrollView, Text, View } from "react-native"
-import { IndicatorViewPager, PagerDotIndicator } from "rn-viewpager"
+import { ScrollView, Text, View, WebView } from "react-native"
+import { withTheme } from "react-native-material-ui"
+import {
+  IndicatorViewPager,
+  PagerDotIndicator,
+  PagerTabIndicator
+} from "rn-viewpager"
+import SyntaxHighlighter from "react-native-syntax-highlighter"
+import monokaiSublime from "react-syntax-highlighter/styles/hljs/monokai-sublime"
 
 class Answers extends Component {
   render() {
     return (
-      <View>
+      <View style={{ width: "100%", height: 200 }}>
         <IndicatorViewPager
-          style={{ height: 200 }}
-          indicator={this._renderDotIndicator()}
+          style={{ height: "100%" }}
+          indicator={this._renderTabIndicator()}
         >
           {this.props.question.options.map((option, index) => (
-            <View key={`option-${index}`}>
-              <Text>{option}</Text>
+            <View key={`${option}-${index}`}>
+              <SyntaxHighlighter
+                language="html"
+                style={monokaiSublime}
+                highlighter={"hljs"}
+                customStyle={{ width: "100%" }}
+                wrapLines={true}
+              >
+                {`${option} - ${index}asdads`}
+              </SyntaxHighlighter>
             </View>
           ))}
-          {/* <View style={{ backgroundColor: "cadetblue" }}>
-            <Text>page one</Text>
-          </View>
-          <View style={{ backgroundColor: "cornflowerblue" }}>
-            <Text>page two</Text>
-          </View>
-          <View style={{ backgroundColor: "#1AA094" }}>
-            <Text>page three</Text>
-          </View> */}
         </IndicatorViewPager>
       </View>
     )
   }
+  getLetter = num => {
+    const table = {
+      0: "A",
+      1: "B",
+      2: "C",
+      3: "D"
+    }
+    return table[num]
+  }
   _renderDotIndicator() {
     return <PagerDotIndicator pageCount={this.props.question.options.length} />
+  }
+  _renderTabIndicator() {
+    let tabs = this.props.question.options.map((option, index) => ({
+      text: this.getLetter(index)
+    }))
+    return (
+      <PagerTabIndicator
+        tabs={tabs}
+        itemStyle={{
+          padding: 8
+        }}
+        selectedItemStyle={{
+          backgroundColor: this.props.theme.palette.accentColor,
+          padding: 8,
+          margin: 2
+        }}
+        textStyle={{ color: this.props.theme.palette.accentColor }}
+        selectedTextStyle={{ color: "white" }}
+        style={{
+          padding: 0,
+          paddingBottom: 0,
+          paddingTop: 0
+        }}
+      />
+    )
   }
 }
 
@@ -46,4 +86,4 @@ const styles = {
   }
 }
 
-export default Answers
+export default withTheme(Answers)

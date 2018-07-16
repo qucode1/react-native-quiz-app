@@ -42,7 +42,6 @@ class RouterWithTheme extends Component {
       email: userEmail,
       profileToken: userProfileToken
     } = await signInWithGoogleAsync()
-    console.log("Router username", userName)
     if (userName) {
       this.props.context.setContext("userName", userName)
       this.props.context.setContext("userId", userId)
