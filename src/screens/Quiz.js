@@ -5,7 +5,7 @@ import {
   BottomNavigation,
   Icon
 } from "react-native-material-ui"
-import { Text } from "react-native"
+import { Text, View } from "react-native"
 import { withContext } from "../utils/AppContext"
 
 import Answers from "../components/Answers"
@@ -44,38 +44,40 @@ class Quiz extends Component {
   render() {
     return this.state.question.title ? (
       <Fragment>
-        <Subheader text={this.state.question.title} />
-        <Card>
-          <Answers
-            question={this.state.question}
-            nextQuestion={this.state.nextQuestion}
-          />
-        </Card>
-        <BottomNavigation
-          active={this.state.active}
-          hidden={false}
+        <View
           style={{
-            container: {
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              width: "100%"
-            }
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "space-between"
           }}
         >
-          <BottomNavigation.Action
-            key="question"
-            icon={<Icon name="question" iconSet="SimpleLineIcons" />}
-            label="Question"
-            onPress={() => this.setState({ active: "question" })}
-          />
-          <BottomNavigation.Action
-            key="answers"
-            icon={<Icon name="ios-book-outline" iconSet="Ionicons" />}
-            label="Answers"
-            onPress={() => this.setState({ active: "answers" })}
-          />
-        </BottomNavigation>
+          <View
+            style={{
+              flex: 1
+            }}
+          >
+            <Subheader text={this.state.question.title} />
+            <Answers
+              question={this.state.question}
+              nextQuestion={this.state.nextQuestion}
+            />
+          </View>
+
+          <BottomNavigation active={this.state.active} hidden={false}>
+            <BottomNavigation.Action
+              key="question"
+              icon={<Icon name="question" iconSet="SimpleLineIcons" />}
+              label="Question"
+              onPress={() => this.setState({ active: "question" })}
+            />
+            <BottomNavigation.Action
+              key="answers"
+              icon={<Icon name="ios-book-outline" iconSet="Ionicons" />}
+              label="Answers"
+              onPress={() => this.setState({ active: "answers" })}
+            />
+          </BottomNavigation>
+        </View>
       </Fragment>
     ) : (
       <Text>Loading...</Text>
