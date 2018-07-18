@@ -21,6 +21,7 @@ class Quiz extends Component {
     this.setInitialQuestions()
   }
   setInitialQuestions = () => {
+    console.log("Quiz component, setInitialQuestions")
     if (this.state.question.title) {
       this.setState(prevState => ({
         question: prevState.nextQuestion,
@@ -57,26 +58,34 @@ class Quiz extends Component {
             }}
           >
             <Subheader text={this.state.question.title} />
-            <Answers
-              question={this.state.question}
-              nextQuestion={this.state.nextQuestion}
-            />
+            {this.state.active === "question" && this.state.question.content ? (
+              <Card>
+                <Text>Question Details</Text>
+              </Card>
+            ) : (
+              <Answers
+                question={this.state.question}
+                nextQuestion={this.state.nextQuestion}
+              />
+            )}
           </View>
 
-          <BottomNavigation active={this.state.active} hidden={false}>
-            <BottomNavigation.Action
-              key="question"
-              icon={<Icon name="question" iconSet="SimpleLineIcons" />}
-              label="Question"
-              onPress={() => this.setState({ active: "question" })}
-            />
-            <BottomNavigation.Action
-              key="answers"
-              icon={<Icon name="ios-book-outline" iconSet="Ionicons" />}
-              label="Answers"
-              onPress={() => this.setState({ active: "answers" })}
-            />
-          </BottomNavigation>
+          {this.state.question.content && (
+            <BottomNavigation active={this.state.active} hidden={false}>
+              <BottomNavigation.Action
+                key="question"
+                icon={<Icon name="question" iconSet="SimpleLineIcons" />}
+                label="Question"
+                onPress={() => this.setState({ active: "question" })}
+              />
+              <BottomNavigation.Action
+                key="answers"
+                icon={<Icon name="ios-book-outline" iconSet="Ionicons" />}
+                label="Answers"
+                onPress={() => this.setState({ active: "answers" })}
+              />
+            </BottomNavigation>
+          )}
         </View>
       </Fragment>
     ) : (
