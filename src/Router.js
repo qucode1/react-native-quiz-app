@@ -47,12 +47,6 @@ class RouterWithTheme extends Component {
       await signInWithGoogleAsync(),
       this.props.context.resetContext()
     ])
-    // const {
-    //   id: userId,
-    //   name: userName,
-    //   email: userEmail,
-    //   profileToken: userProfileToken
-    // } = await signInWithGoogleAsync()
     if (userName) {
       this.props.context.setContext("userName", userName)
       this.props.context.setContext("userId", userId)
@@ -78,7 +72,7 @@ class RouterWithTheme extends Component {
           />
         ) : (
           <Fragment>
-            <StatusBarPlaceholder theme={this.props.theme} />
+            <StatusBarPlaceholder />
             <View
               style={{
                 flex: 1,
@@ -92,9 +86,17 @@ class RouterWithTheme extends Component {
               ) : (
                 <Button
                   raised
-                  primary
                   text="Goolge Login"
                   onPress={this.googleSignIn}
+                  style={{
+                    container: {
+                      margin: 10,
+                      backgroundColor: this.props.theme.palette.primary.main
+                    },
+                    text: {
+                      color: this.props.theme.palette.primary.contrastText
+                    }
+                  }}
                 />
               )}
             </View>

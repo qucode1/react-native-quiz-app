@@ -4,7 +4,8 @@ import {
   Card,
   BottomNavigation,
   Icon,
-  Button
+  Button,
+  withTheme
 } from "react-native-material-ui"
 import { Text, View } from "react-native"
 import { withContext } from "../utils/AppContext"
@@ -28,10 +29,8 @@ class Quiz extends Component {
   handleAnswerChange = index => this.setState({ selectedAnswer: index })
   submitAnswer = () => {
     this.setState({ answerSubmitted: true })
-    // console.log("question", this.state.question)
   }
   setQuestions = () => {
-    console.log("Quiz component, setQuestions")
     if (this.state.question.title) {
       this.setState(prevState => ({
         question: prevState.nextQuestion,
@@ -108,34 +107,46 @@ class Quiz extends Component {
                   </Card>
                 ) : (
                   <Fragment>
-                    <Answers
-                      question={this.state.question}
-                      nextQuestion={this.state.nextQuestion}
-                      handleAnswerChange={this.handleAnswerChange}
-                      getLetter={this.getLetter}
-                      displayAnswer={this.state.displayAnswer}
-                    />
-                    <Button
-                      primary
-                      raised
-                      text={
-                        this.state.displayAnswer
-                          ? "Next Question"
-                          : `Submit ${this.getLetter(
-                              this.state.selectedAnswer
-                            )}`
-                      }
-                      onPress={
-                        this.state.displayAnswer
-                          ? this.nextQuestion
-                          : this.submitAnswer
-                      }
+                    <View
                       style={{
-                        container: {
-                          margin: 10
-                        }
+                        flex: 3,
+                        width: "100%"
                       }}
-                    />
+                    >
+                      <Answers
+                        question={this.state.question}
+                        nextQuestion={this.state.nextQuestion}
+                        handleAnswerChange={this.handleAnswerChange}
+                        getLetter={this.getLetter}
+                        displayAnswer={this.state.displayAnswer}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      <Button
+                        raised
+                        text={`Submit ${this.getLetter(
+                          this.state.selectedAnswer
+                        )}`}
+                        onPress={this.submitAnswer}
+                        style={{
+                          container: {
+                            margin: 10,
+                            backgroundColor: this.props.theme.palette.secondary
+                              .main
+                          },
+                          text: {
+                            color: this.props.theme.palette.secondary
+                              .contrastText
+                          }
+                        }}
+                      />
+                    </View>
                   </Fragment>
                 )}
               </View>
@@ -164,4 +175,4 @@ class Quiz extends Component {
   }
 }
 
-export default withContext(Quiz)
+export default withContext(withTheme(Quiz))

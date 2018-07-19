@@ -11,19 +11,9 @@ import monokaiSublime from "react-syntax-highlighter/styles/hljs/monokai-sublime
 
 class Answers extends Component {
   componentDidMount() {
-    console.log("answers did mount")
     if (this.props.displayAnswer && this.viewPager) {
-      console.log("display correct answer")
       this.viewPager.setPage(this.props.question.answer)
     }
-  }
-  componentDidUpdate() {
-    console.log("answers did update")
-    this.setState(state => state)
-    // if (this.props.displayAnswer && this.viewPager) {
-    //   console.log("display correct answer")
-    //   this.viewPager.setPage(this.props.question.answer)
-    // }
   }
   _renderDotIndicator() {
     return <PagerDotIndicator pageCount={this.props.question.options.length} />
@@ -45,7 +35,7 @@ class Answers extends Component {
           fontSize: 15
         }}
         selectedTextStyle={{
-          color: this.props.theme.palette.accentColor,
+          color: this.props.theme.palette.primaryColor,
           fontSize: 15,
           fontWeight: "bold"
         }}

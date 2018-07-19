@@ -16,7 +16,6 @@ class Profile extends Component {
         AsyncStorage.getItem("userEmail"),
         AsyncStorage.getItem("categories").then(res => JSON.parse(res))
       ])
-      // const parsedCat = await JSON.parse(categories)
       this.setState({
         userName,
         userEmail,

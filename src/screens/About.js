@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { Text } from "react-native"
-import { Button, withTheme } from "react-native-material-ui"
+import { Button, withTheme, Card } from "react-native-material-ui"
 
 import WithHeader from "../layouts/WithHeader"
 
@@ -12,7 +12,12 @@ class About extends Component {
         navigation={this.props.navigation}
         screenProps={this.props.screenProps}
       >
-        <Text>About Component</Text>
+        <Card>
+          <Text>
+            Welcome to the Web Developer Quiz App. Test your knowledge in
+            various areas of HTML, CSS, JS, React, Node and more
+          </Text>
+        </Card>
         <Button
           primary
           text="Go to home screen"

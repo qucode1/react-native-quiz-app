@@ -20,9 +20,9 @@ const QuizRouter = createStackNavigator({
     }) => ({
       title: params.category,
       headerStyle: {
-        backgroundColor: theme.palette.accentColor
+        backgroundColor: theme.palette.primary.main
       },
-      headerTintColor: "white"
+      headerTintColor: theme.palette.primary.contrastText
     })
   }
 })

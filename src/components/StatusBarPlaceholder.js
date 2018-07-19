@@ -1,4 +1,5 @@
 import React from "react"
+import { withTheme } from "react-native-material-ui"
 import { View, StatusBar } from "react-native"
 
 const StatusBarPlaceholder = ({ theme }) => (
@@ -10,4 +11,4 @@ const StatusBarPlaceholder = ({ theme }) => (
   />
 )
 
-export default StatusBarPlaceholder
+export default withTheme(StatusBarPlaceholder)
