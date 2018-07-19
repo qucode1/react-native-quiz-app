@@ -36,12 +36,23 @@ class RouterWithTheme extends Component {
   async componentDidMount() {}
   googleSignIn = async () => {
     this.setState({ loading: true })
-    const {
-      id: userId,
-      name: userName,
-      email: userEmail,
-      profileToken: userProfileToken
-    } = await signInWithGoogleAsync()
+    const [
+      {
+        id: userId,
+        name: userName,
+        email: userEmail,
+        profileToken: userProfileToken
+      }
+    ] = await Promise.all([
+      await signInWithGoogleAsync(),
+      this.props.context.resetContext()
+    ])
+    // const {
+    //   id: userId,
+    //   name: userName,
+    //   email: userEmail,
+    //   profileToken: userProfileToken
+    // } = await signInWithGoogleAsync()
     if (userName) {
       this.props.context.setContext("userName", userName)
       this.props.context.setContext("userId", userId)

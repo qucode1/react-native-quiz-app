@@ -3,25 +3,35 @@ import {
   Subheader,
   Card,
   BottomNavigation,
-  Icon
+  Icon,
+  Button
 } from "react-native-material-ui"
 import { Text, View } from "react-native"
 import { withContext } from "../utils/AppContext"
 
 import Answers from "../components/Answers"
+import Result from "../components/Result"
 
 class Quiz extends Component {
   state = {
     category: this.props.navigation.getParam("category"),
     question: {},
     nextQuestion: {},
-    active: "question"
+    selectedAnswer: 0,
+    active: "question",
+    answerSubmitted: false,
+    displayAnswer: false
   }
   componentDidMount() {
-    this.setInitialQuestions()
+    this.setQuestions()
   }
-  setInitialQuestions = () => {
-    console.log("Quiz component, setInitialQuestions")
+  handleAnswerChange = index => this.setState({ selectedAnswer: index })
+  submitAnswer = () => {
+    this.setState({ answerSubmitted: true })
+    // console.log("question", this.state.question)
+  }
+  setQuestions = () => {
+    console.log("Quiz component, setQuestions")
     if (this.state.question.title) {
       this.setState(prevState => ({
         question: prevState.nextQuestion,
@@ -32,7 +42,20 @@ class Quiz extends Component {
         question: this.getRandomQuestion(),
         nextQuestion: this.getRandomQuestion()
       })
-    } else setTimeout(this.setInitialQuestions, 200)
+    } else setTimeout(this.setQuestions, 200)
+  }
+  nextQuestion = () => {
+    this.setQuestions()
+    this.setState({
+      answerSubmitted: false,
+      selectedAnswer: 0,
+      displayAnswer: false
+    })
+  }
+  displayCorrectAnswer = () => {
+    this.setState({
+      displayAnswer: true
+    })
   }
   getRandomQuestion = () => {
     const allQuestions = this.props.context.state[
@@ -40,57 +63,104 @@ class Quiz extends Component {
     ]
     return allQuestions[this.getRandomInteger(0, allQuestions.length - 1)]
   }
+  getLetter = num => {
+    const table = {
+      0: "A",
+      1: "B",
+      2: "C",
+      3: "D"
+    }
+    return table[num]
+  }
   getRandomInteger = (min, max) =>
     Math.floor(Math.random() * (max - min + 1)) + min
   render() {
-    return this.state.question.title ? (
-      <Fragment>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "column",
-            justifyContent: "space-between"
-          }}
-        >
-          <View
-            style={{
-              flex: 1
-            }}
-          >
-            <Subheader text={this.state.question.title} />
-            {this.state.active === "question" && this.state.question.content ? (
-              <Card>
-                <Text>Question Details</Text>
-              </Card>
-            ) : (
-              <Answers
-                question={this.state.question}
-                nextQuestion={this.state.nextQuestion}
-              />
-            )}
-          </View>
+    if (this.state.question.title) {
+      if (this.state.answerSubmitted && !this.state.displayAnswer) {
+        return (
+          <Result
+            question={this.state.question}
+            selectedAnswer={this.state.selectedAnswer}
+            nextQuestion={this.nextQuestion}
+            displayCorrectAnswer={this.displayCorrectAnswer}
+          />
+        )
+      } else {
+        return (
+          <Fragment>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "column",
+                justifyContent: "space-between"
+              }}
+            >
+              <View
+                style={{
+                  flex: 1
+                }}
+              >
+                <Subheader text={this.state.question.title} />
+                {this.state.active === "question" &&
+                this.state.question.content ? (
+                  <Card>
+                    <Text>Question Details</Text>
+                  </Card>
+                ) : (
+                  <Fragment>
+                    <Answers
+                      question={this.state.question}
+                      nextQuestion={this.state.nextQuestion}
+                      handleAnswerChange={this.handleAnswerChange}
+                      getLetter={this.getLetter}
+                      displayAnswer={this.state.displayAnswer}
+                    />
+                    <Button
+                      primary
+                      raised
+                      text={
+                        this.state.displayAnswer
+                          ? "Next Question"
+                          : `Submit ${this.getLetter(
+                              this.state.selectedAnswer
+                            )}`
+                      }
+                      onPress={
+                        this.state.displayAnswer
+                          ? this.nextQuestion
+                          : this.submitAnswer
+                      }
+                      style={{
+                        container: {
+                          margin: 10
+                        }
+                      }}
+                    />
+                  </Fragment>
+                )}
+              </View>
 
-          {this.state.question.content && (
-            <BottomNavigation active={this.state.active} hidden={false}>
-              <BottomNavigation.Action
-                key="question"
-                icon={<Icon name="question" iconSet="SimpleLineIcons" />}
-                label="Question"
-                onPress={() => this.setState({ active: "question" })}
-              />
-              <BottomNavigation.Action
-                key="answers"
-                icon={<Icon name="ios-book-outline" iconSet="Ionicons" />}
-                label="Answers"
-                onPress={() => this.setState({ active: "answers" })}
-              />
-            </BottomNavigation>
-          )}
-        </View>
-      </Fragment>
-    ) : (
-      <Text>Loading...</Text>
-    )
+              {this.state.question.content && (
+                <BottomNavigation active={this.state.active} hidden={false}>
+                  <BottomNavigation.Action
+                    key="question"
+                    icon={<Icon name="question" iconSet="SimpleLineIcons" />}
+                    label="Question"
+                    onPress={() => this.setState({ active: "question" })}
+                  />
+                  <BottomNavigation.Action
+                    key="answers"
+                    icon={<Icon name="ios-book-outline" iconSet="Ionicons" />}
+                    label="Answers"
+                    onPress={() => this.setState({ active: "answers" })}
+                  />
+                </BottomNavigation>
+              )}
+            </View>
+          </Fragment>
+        )
+      }
+    } else return <Text>Loading...</Text>
   }
 }
 

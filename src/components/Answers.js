@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react"
 import { View } from "react-native"
-import { withTheme, Button, Card } from "react-native-material-ui"
+import { withTheme, Card } from "react-native-material-ui"
 import {
   IndicatorViewPager,
   PagerDotIndicator,
@@ -10,25 +10,27 @@ import SyntaxHighlighter from "react-native-syntax-highlighter"
 import monokaiSublime from "react-syntax-highlighter/styles/hljs/monokai-sublime"
 
 class Answers extends Component {
-  state = {
-    selectedAnswer: 0
-  }
-  handleAnswerChange = index => this.setState({ selectedAnswer: index })
-  getLetter = num => {
-    const table = {
-      0: "A",
-      1: "B",
-      2: "C",
-      3: "D"
+  componentDidMount() {
+    console.log("answers did mount")
+    if (this.props.displayAnswer && this.viewPager) {
+      console.log("display correct answer")
+      this.viewPager.setPage(this.props.question.answer)
     }
-    return table[num]
+  }
+  componentDidUpdate() {
+    console.log("answers did update")
+    this.setState(state => state)
+    // if (this.props.displayAnswer && this.viewPager) {
+    //   console.log("display correct answer")
+    //   this.viewPager.setPage(this.props.question.answer)
+    // }
   }
   _renderDotIndicator() {
     return <PagerDotIndicator pageCount={this.props.question.options.length} />
   }
   _renderTabIndicator() {
     let tabs = this.props.question.options.map((option, index) => ({
-      text: this.getLetter(index)
+      text: this.props.getLetter(index)
     }))
     return (
       <PagerTabIndicator
@@ -65,8 +67,11 @@ class Answers extends Component {
               indicator={this._renderTabIndicator()}
               initialPage={0}
               onPageSelected={({ position }) =>
-                this.handleAnswerChange(position)
+                this.props.handleAnswerChange(position)
               }
+              ref={viewPager => {
+                this.viewPager = viewPager
+              }}
             >
               {this.props.question.options.map((option, index) => (
                 <View key={`${option}-${index}`}>
@@ -77,23 +82,13 @@ class Answers extends Component {
                     customStyle={{ width: "100%" }}
                     wrapLines={true}
                   >
-                    {`${option} - ${index}`}
+                    {`${option}`}
                   </SyntaxHighlighter>
                 </View>
               ))}
             </IndicatorViewPager>
           </View>
         </Card>
-        <Button
-          accent
-          raised
-          text={`Submit ${this.getLetter(this.state.selectedAnswer)}`}
-          style={{
-            container: {
-              margin: 10
-            }
-          }}
-        />
       </Fragment>
     )
   }
